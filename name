@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>우리 반 한글 놀이터</title>
+    <style>
+        @font-face {
+            font-family: 'OngleipParkDahyeon';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2411-3@1.0/Ownglyph_ParkDaHyun.woff2') format('woff2');
+            font-weight: normal; font-display: swap;
+        }
+        :root { --primary: #ff8fb1; --secondary: #4db6ac; --bg: #fffbf5; }
+        * { font-family: 'OngleipParkDahyeon', cursive !important; box-sizing: border-box; }
+        body { background-color: var(--bg); text-align: center; padding: 0; margin: 0; color: #444; overflow-x: hidden; }
+
+        /* 1. 교사용 설정 페이지 */
+        #admin-page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: white; }
+        .setup-box { width: 450px; padding: 40px; border-radius: 30px; border: 3px solid var(--primary); box-shadow: 0 10px 30px rgba(255,143,177,0.2); }
+        .setup-box h2 { color: var(--primary); font-size: 35px; margin-bottom: 25px; }
+        .upload-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #fdfdfd; border: 2px dashed #ffcadb; border-radius: 15px; cursor: pointer; color: #ff8fb1; font-weight: bold; font-size: 18px; }
+        .upload-btn.done { border-color: var(--secondary); background: #f1f8e9; color: #2e7d32; }
+        .entry-btn { width: 100%; padding: 20px; background: var(--primary); color: white; border: none; border-radius: 50px; font-size: 28px; font-weight: bold; cursor: pointer; margin-top: 20px; display: none; box-shadow: 0 5px 15px rgba(255,143,177,0.4); }
+
+        /* 2. 학생용 게임 화면 */
+        #game-page { display: none; padding: 20px; }
+        h1 { font-size: 45px; color: var(--primary); margin-bottom: 15px; }
+
+        /* 🌟 음악 제어 버튼 스타일 🌟 */
+        .bgm-toggle {
+            position: fixed; top: 20px; right: 20px; z-index: 100;
+            background: white; border: 2px solid var(--primary); border-radius: 50px;
+            padding: 10px 15px; cursor: pointer; font-size: 20px; font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.2s;
+        }
+
+        .top-bar { display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; width: 100%; }
+        .draw-btn { font-size: 28px; padding: 12px 50px; background: var(--secondary); color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 8px 15px rgba(77, 182, 172, 0.3); height: 75px; transition: 0.2s; }
+
+        /* 이름 카드 */
+        .word-container { display: flex; flex-direction: row; justify-content: center; align-items: flex-end; gap: 15px; margin: 20px auto; flex-wrap: wrap; min-height: 160px; }
+        .syllable { display: flex; flex-direction: column; background: white; border: 3px solid #ffdeeb; border-radius: 20px; padding: 15px; min-width: 110px; min-height: 145px; align-items: center; justify-content: center; box-shadow: 0 6px 12px rgba(0,0,0,0.05); }
+        .syllable.all-clear { border-color: #81c784; background-color: #f1f8e9; transform: scale(1.05); }
+
+        .top-part { display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .top-part.row { flex-direction: row !important; }
+        .top-part.column { flex-direction: column !important; }
+
+        .cho-box, .jong-box { width: 48px; height: 48px; border: 2.5px dashed #ffcadb; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: bold; background: #fffcfd; border-radius: 12px; color: #ffdee8; }
+        .cho-box.open, .jong-box.open { border: 3px solid #81c784; color: #2e7d32; background: white; }
+        .jung-text { font-size: 58px; font-weight: bold; color: #ff5252; line-height: 1; }
+
+        /* 가로 자판 유지 */
+        .keyboard-container { max-width: 650px; margin: 30px auto; display: flex !important; flex-direction: column !important; gap: 10px; }
+        .keyboard-row { display: flex !important; flex-direction: row !important; justify-content: center !important; gap: 8px; width: 100%; }
+        .key { width: 60px; height: 60px; background: white; border: 2px solid #ffdeeb; border-radius: 15px; font-weight: bold; font-size: 32px; cursor: pointer; box-shadow: 0 4px 0 #ffdeeb; color: #555; }
+        .key.hit { background: #81c784 !important; color: white !important; border: none; box-shadow: 0 4px 0 #66bb6a; }
+        .key.miss { background: #eee !important; color: #ccc !important; border: none; box-shadow: none; }
+
+        #msg { font-size: 32px; font-weight: bold; color: var(--secondary); height: 45px; margin-top: 10px; }
+
+        /* 모달 */
+        #photo-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 25px; border-radius: 30px; border: 8px solid var(--primary); z-index: 1000; width: 330px; box-shadow: 0 0 50px rgba(0,0,0,0.3); }
+        #photo-modal img { width: 100%; height: 320px; object-fit: cover; border-radius: 20px; margin-bottom: 10px; }
+        #modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index: 999; }
+        input[type="file"] { display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="admin-page">
+        <div class="setup-box">
+            <h2>⚙️ 선생님 설정</h2>
+            <label for="nameInput" id="name-btn" class="upload-btn">1. 명단(.txt) 불러오기</label>
+            <input type="file" id="nameInput" accept=".txt">
+            <label for="photoInput" id="photo-btn" class="upload-btn">2. 사진들 뭉땅 선택</label>
+            <input type="file" id="photoInput" accept="image/*" multiple>
+            <button class="entry-btn" id="entryBtn" onclick="startGame()">우리 반 한글 놀이터 입장! 🎲</button>
+        </div>
+    </div>
+
+    <div id="game-page">
+        <button class="bgm-toggle" id="bgmBtn" onclick="toggleBgm()">소리 켬 🔊</button>
+
+        <h1>🍓 우리 반 한글 놀이터</h1>
+        <div class="top-bar">
+            <button class="draw-btn" onclick="nextGame()">주인공 나와라 얍! 🎲</button>
+        </div>
+        <div id="msg">준비가 끝나면 뽑기를 눌러요!</div>
+        <div class="word-container" id="display"></div>
+        <div class="keyboard-container" id="kbd"></div>
+
+        <div id="modal-overlay" onclick="closeModal()"></div>
+        <div id="photo-modal">
+            <img id="winner-img" src="" alt="친구 사진">
+            <div id="winner-name" style="font-size:35px; color:var(--primary); font-weight:bold;"></div>
+            <button onclick="nextGame()" style="padding:10px 30px; border-radius:20px; border:none; background:var(--secondary); color:white; cursor:pointer; font-size:20px; font-weight:bold; margin-top:10px;">다음 친구 보러 가기 ➔</button>
+        </div>
+    </div>
+
+    <script>
+        const CHO = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+        const JUNG = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"];
+        const JONG = ["","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ","ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+        const SIDE_VOWELS = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅣ"];
+        const KEYBOARD_LAYOUT = [["ㄱ","ㄴ","ㄷ","ㄹ","ㅁ","ㅂ","ㅅ"],["ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"],["ㄲ","ㄸ","ㅃ","ㅆ","ㅉ"]];
+
+        let names = [], unplayed = [], currentWord = "", state = [];
+        let photoMap = {}; 
+        let audioCtx = null;
+        let isBgmOn = true;
+
+        // 🌟 배경음악 객체 🌟
+        const bgm = new Audio('Mr. Turtle - The Green Orbs.mp3');
+        bgm.loop = true; bgm.volume = 0.2;
+
+        function playSuccessSound() {
+            if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.1); 
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+        }
+
+        // 🌟 배경음악 토글 기능 🌟
+        function toggleBgm() {
+            const btn = document.getElementById('bgmBtn');
+            if(isBgmOn) {
+                bgm.pause();
+                btn.innerText = "소리 끔 🔇";
+            } else {
+                bgm.play();
+                btn.innerText = "소리 켬 🔊";
+            }
+            isBgmOn = !isBgmOn;
+        }
+
+        document.getElementById('nameInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (re) => {
+                names = re.target.result.match(/[가-힣]+/g) || [];
+                unplayed = [...names];
+                document.getElementById('name-btn').innerText = "✅ 명단 완료 (" + names.length + "명)";
+                document.getElementById('name-btn').classList.add('done');
+                checkSetup();
+            };
+            reader.readAsText(file, "UTF-8");
+        });
+
+        document.getElementById('photoInput').addEventListener('change', async function(e) {
+            const files = Array.from(e.target.files);
+            photoMap = {}; 
+            const promises = files.map(file => {
+                return new Promise((resolve) => {
+                    const name = file.name.split('.')[0].trim();
+                    const reader = new FileReader();
+                    reader.onload = (re) => { photoMap[name] = re.target.result; resolve(); };
+                    reader.readAsDataURL(file);
+                });
+            });
+            await Promise.all(promises);
+            document.getElementById('photo-btn').innerText = "✅ 사진 완료 (" + Object.keys(photoMap).length + "장)";
+            document.getElementById('photo-btn').classList.add('done');
+            checkSetup();
+        });
+
+        function checkSetup() { if (names.length > 0 && Object.keys(photoMap).length > 0) document.getElementById('entryBtn').style.display = 'block'; }
+
+        function startGame() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            bgm.play().catch(() => {});
+            document.getElementById('admin-page').style.display = 'none';
+            document.getElementById('game-page').style.display = 'block';
+        }
+
+        function decompose(word) {
+            return Array.from(word).map(char => {
+                const code = char.charCodeAt(0) - 44032;
+                const jongIdx = code % 28, jungIdx = ((code - jongIdx) / 28) % 21, choIdx = Math.floor(((code - jongIdx) / 28) / 21);
+                return { cho: CHO[choIdx], jung: JUNG[jungIdx], jong: JONG[jongIdx] };
+            });
+        }
+
+        function nextGame() {
+            closeModal();
+            if (unplayed.length === 0) unplayed = [...names];
+            currentWord = unplayed.splice(Math.floor(Math.random() * unplayed.length), 1)[0];
+            state = decompose(currentWord).map(d => ({ ...d, choOpen: false, jongOpen: d.jong === "" }));
+            document.getElementById('msg').innerText = "누구일까? 자음을 눌러봐!";
+            renderWord();
+            renderKeyboard();
+        }
+
+        function renderWord() {
+            const container = document.getElementById('display');
+            container.innerHTML = "";
+            state.forEach((s, i) => {
+                const div = document.createElement('div');
+                div.className = "syllable";
+                const isSide = SIDE_VOWELS.includes(s.jung);
+                let html = `<div class="top-part ${isSide ? 'row' : 'column'}">`;
+                html += `<div class="cho-box ${s.choOpen ? 'open' : ''}">${s.choOpen ? s.cho : '?'}</div>`;
+                html += `<div class="jung-text">${s.jung}</div></div>`;
+                if (s.jong !== "") html += `<div class="bottom-part"><div class="jong-box ${s.jongOpen ? 'open' : ''}">${s.jongOpen ? s.jong : '?'}</div></div>`;
+                div.innerHTML = html;
+                if (s.choOpen && (s.jong === "" || s.jongOpen)) div.classList.add('all-clear');
+                container.appendChild(div);
+            });
+        }
+
+        function renderKeyboard() {
+            const kbd = document.getElementById('kbd');
+            kbd.innerHTML = "";
+            KEYBOARD_LAYOUT.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = "keyboard-row";
+                row.forEach(c => {
+                    const b = document.createElement('button');
+                    b.className = 'key'; b.innerText = c;
+                    b.onclick = () => guess(c, b);
+                    rowDiv.appendChild(b);
+                });
+                kbd.appendChild(rowDiv);
+            });
+        }
+
+        function guess(c, btn) {
+            let found = false;
+            state.forEach((s, i) => {
+                if (s.cho === c && !s.choOpen) { s.choOpen = true; found = true; }
+                if (s.jong === c && !s.jongOpen) { s.jongOpen = true; found = true; }
+            });
+            if (found) { btn.classList.add('hit'); renderWord(); checkWin(); } 
+            else { btn.classList.add('miss'); }
+        }
+
+        function checkWin() { if (state.every(s => s.choOpen && (s.jong === "" || s.jongOpen))) { playSuccessSound(); showModal(); } }
+
+        function showModal() {
+            document.getElementById('winner-name').innerText = currentWord;
+            const photoData = photoMap[currentWord.trim()];
+            document.getElementById('winner-img').src = photoData ? photoData : 'https://via.placeholder.com/300?text=No+Photo';
+            document.getElementById('modal-overlay').style.display = "block";
+            document.getElementById('photo-modal').style.display = "block";
+        }
+
+        function closeModal() { document.getElementById('modal-overlay').style.display = "none"; document.getElementById('photo-modal').style.display = "none"; }
+    </script>
+</body>
+</html>
