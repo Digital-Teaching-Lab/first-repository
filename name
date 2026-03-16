@@ -10,11 +10,11 @@
             src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2411-3@1.0/Ownglyph_ParkDaHyun.woff2') format('woff2');
             font-weight: normal; font-display: swap;
         }
-        :root { --primary: #ff8fb1; --secondary: #4db6ac; --bg: #fffbf5; }
+        :root { --primary: #ff8fb1; --secondary: #4db6ac; --bg: #fffbf5; --error: #ff5252; }
         * { font-family: 'OngleipParkDahyeon', cursive !important; box-sizing: border-box; }
         body { background-color: var(--bg); text-align: center; padding: 0; margin: 0; color: #444; overflow-x: hidden; }
 
-        /* 1. 교사용 설정 페이지 */
+        /* 1. 교사 설정 페이지 */
         #admin-page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: white; }
         .setup-box { width: 450px; padding: 40px; border-radius: 30px; border: 3px solid var(--primary); box-shadow: 0 10px 30px rgba(255,143,177,0.2); }
         .setup-box h2 { color: var(--primary); font-size: 35px; margin-bottom: 25px; }
@@ -26,7 +26,6 @@
         #game-page { display: none; padding: 20px; }
         h1 { font-size: 45px; color: var(--primary); margin-bottom: 15px; }
 
-        /* 🌟 음악 제어 버튼 스타일 🌟 */
         .bgm-toggle {
             position: fixed; top: 20px; right: 20px; z-index: 100;
             background: white; border: 2px solid var(--primary); border-radius: 50px;
@@ -39,7 +38,7 @@
 
         /* 이름 카드 */
         .word-container { display: flex; flex-direction: row; justify-content: center; align-items: flex-end; gap: 15px; margin: 20px auto; flex-wrap: wrap; min-height: 160px; }
-        .syllable { display: flex; flex-direction: column; background: white; border: 3px solid #ffdeeb; border-radius: 20px; padding: 15px; min-width: 110px; min-height: 145px; align-items: center; justify-content: center; box-shadow: 0 6px 12px rgba(0,0,0,0.05); }
+        .syllable { display: flex; flex-direction: column; background: white; border: 3px solid #ffdeeb; border-radius: 20px; padding: 15px; min-width: 110px; min-height: 145px; align-items: center; justify-content: center; box-shadow: 0 6px 12px rgba(0,0,0,0.05); transition: 0.3s; }
         .syllable.all-clear { border-color: #81c784; background-color: #f1f8e9; transform: scale(1.05); }
 
         .top-part { display: flex; align-items: center; justify-content: center; gap: 10px; }
@@ -50,12 +49,26 @@
         .cho-box.open, .jong-box.open { border: 3px solid #81c784; color: #2e7d32; background: white; }
         .jung-text { font-size: 58px; font-weight: bold; color: #ff5252; line-height: 1; }
 
-        /* 가로 자판 유지 */
+        /* 자판 */
         .keyboard-container { max-width: 650px; margin: 30px auto; display: flex !important; flex-direction: column !important; gap: 10px; }
         .keyboard-row { display: flex !important; flex-direction: row !important; justify-content: center !important; gap: 8px; width: 100%; }
-        .key { width: 60px; height: 60px; background: white; border: 2px solid #ffdeeb; border-radius: 15px; font-weight: bold; font-size: 32px; cursor: pointer; box-shadow: 0 4px 0 #ffdeeb; color: #555; }
+        .key { width: 60px; height: 60px; background: white; border: 2px solid #ffdeeb; border-radius: 15px; font-weight: bold; font-size: 32px; cursor: pointer; box-shadow: 0 4px 0 #ffdeeb; color: #555; transition: 0.1s; position: relative; }
+        
+        /* 🌟 정답 스타일 🌟 */
         .key.hit { background: #81c784 !important; color: white !important; border: none; box-shadow: 0 4px 0 #66bb6a; }
-        .key.miss { background: #eee !important; color: #ccc !important; border: none; box-shadow: none; }
+        
+        /* 🌟 오답 스타일 (흔들기 포함) 🌟 */
+        .key.miss { background: var(--error) !important; color: white !important; border-color: #d32f2f; box-shadow: 0 4px 0 #b71c1c; }
+        
+        /* 🌟 흔들기 애니메이션 클래스 🌟 */
+        .key.shake { animation: shake 0.5s ease-in-out; }
+
+        /* 🌟 흔들기 애니메이션 정의 🌟 */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
 
         #msg { font-size: 32px; font-weight: bold; color: var(--secondary); height: 45px; margin-top: 10px; }
 
@@ -110,7 +123,7 @@
         let audioCtx = null;
         let isBgmOn = true;
 
-        // 🌟 배경음악 객체 🌟
+        // 배경음악 객체
         const bgm = new Audio('Mr. Turtle - The Green Orbs.mp3');
         bgm.loop = true; bgm.volume = 0.2;
 
@@ -128,7 +141,7 @@
             osc.start(); osc.stop(audioCtx.currentTime + 0.4);
         }
 
-        // 🌟 배경음악 토글 기능 🌟
+        // 배경음악 토글 기능
         function toggleBgm() {
             const btn = document.getElementById('bgmBtn');
             if(isBgmOn) {
@@ -231,14 +244,29 @@
             });
         }
 
+        // 🌟 정답/오답 로직 업데이트 🌟
         function guess(c, btn) {
             let found = false;
             state.forEach((s, i) => {
                 if (s.cho === c && !s.choOpen) { s.choOpen = true; found = true; }
                 if (s.jong === c && !s.jongOpen) { s.jongOpen = true; found = true; }
             });
-            if (found) { btn.classList.add('hit'); renderWord(); checkWin(); } 
-            else { btn.classList.add('miss'); }
+            
+            if (found) {
+                // 정답: 녹색으로 변함
+                btn.classList.add('hit');
+                renderWord();
+                checkWin();
+            } else {
+                // 오답: 빨간색으로 변하고 흔들림
+                btn.classList.add('miss'); // 빨간색 스타일 적용
+                btn.classList.add('shake'); // 흔들기 애니메이션 시작
+                
+                // 0.5초(애니메이션 시간) 후에 shake 클래스만 제거 (다음에 또 누르면 흔들리게)
+                setTimeout(() => {
+                    btn.classList.remove('shake');
+                }, 500);
+            }
         }
 
         function checkWin() { if (state.every(s => s.choOpen && (s.jong === "" || s.jongOpen))) { playSuccessSound(); showModal(); } }
