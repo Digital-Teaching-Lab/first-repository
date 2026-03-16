@@ -36,7 +36,6 @@
         .top-bar { display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; width: 100%; }
         .draw-btn { font-size: 28px; padding: 12px 50px; background: var(--secondary); color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 8px 15px rgba(77, 182, 172, 0.3); height: 75px; transition: 0.2s; }
 
-        /* 이름 카드 */
         .word-container { display: flex; flex-direction: row; justify-content: center; align-items: flex-end; gap: 15px; margin: 20px auto; flex-wrap: wrap; min-height: 160px; }
         .syllable { display: flex; flex-direction: column; background: white; border: 3px solid #ffdeeb; border-radius: 20px; padding: 15px; min-width: 110px; min-height: 145px; align-items: center; justify-content: center; box-shadow: 0 6px 12px rgba(0,0,0,0.05); transition: 0.3s; }
         .syllable.all-clear { border-color: #81c784; background-color: #f1f8e9; transform: scale(1.05); }
@@ -49,21 +48,14 @@
         .cho-box.open, .jong-box.open { border: 3px solid #81c784; color: #2e7d32; background: white; }
         .jung-text { font-size: 58px; font-weight: bold; color: #ff5252; line-height: 1; }
 
-        /* 자판 */
         .keyboard-container { max-width: 650px; margin: 30px auto; display: flex !important; flex-direction: column !important; gap: 10px; }
         .keyboard-row { display: flex !important; flex-direction: row !important; justify-content: center !important; gap: 8px; width: 100%; }
         .key { width: 60px; height: 60px; background: white; border: 2px solid #ffdeeb; border-radius: 15px; font-weight: bold; font-size: 32px; cursor: pointer; box-shadow: 0 4px 0 #ffdeeb; color: #555; transition: 0.1s; position: relative; }
         
-        /* 🌟 정답 스타일 🌟 */
         .key.hit { background: #81c784 !important; color: white !important; border: none; box-shadow: 0 4px 0 #66bb6a; }
-        
-        /* 🌟 오답 스타일 (흔들기 포함) 🌟 */
         .key.miss { background: var(--error) !important; color: white !important; border-color: #d32f2f; box-shadow: 0 4px 0 #b71c1c; }
-        
-        /* 🌟 흔들기 애니메이션 클래스 🌟 */
         .key.shake { animation: shake 0.5s ease-in-out; }
 
-        /* 🌟 흔들기 애니메이션 정의 🌟 */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
@@ -72,7 +64,6 @@
 
         #msg { font-size: 32px; font-weight: bold; color: var(--secondary); height: 45px; margin-top: 10px; }
 
-        /* 모달 */
         #photo-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 25px; border-radius: 30px; border: 8px solid var(--primary); z-index: 1000; width: 330px; box-shadow: 0 0 50px rgba(0,0,0,0.3); }
         #photo-modal img { width: 100%; height: 320px; object-fit: cover; border-radius: 20px; margin-bottom: 10px; }
         #modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index: 999; }
@@ -94,7 +85,6 @@
 
     <div id="game-page">
         <button class="bgm-toggle" id="bgmBtn" onclick="toggleBgm()">소리 켬 🔊</button>
-
         <h1>🍓 우리 반 한글 놀이터</h1>
         <div class="top-bar">
             <button class="draw-btn" onclick="nextGame()">주인공 나와라 얍! 🎲</button>
@@ -113,7 +103,7 @@
 
     <script>
         const CHO = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
-        const JUNG = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"];
+        const JUNG = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"];
         const JONG = ["","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ","ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
         const SIDE_VOWELS = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅣ"];
         const KEYBOARD_LAYOUT = [["ㄱ","ㄴ","ㄷ","ㄹ","ㅁ","ㅂ","ㅅ"],["ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"],["ㄲ","ㄸ","ㅃ","ㅆ","ㅉ"]];
@@ -123,7 +113,6 @@
         let audioCtx = null;
         let isBgmOn = true;
 
-        // 배경음악 객체
         const bgm = new Audio('Mr. Turtle - The Green Orbs.mp3');
         bgm.loop = true; bgm.volume = 0.2;
 
@@ -141,16 +130,10 @@
             osc.start(); osc.stop(audioCtx.currentTime + 0.4);
         }
 
-        // 배경음악 토글 기능
         function toggleBgm() {
             const btn = document.getElementById('bgmBtn');
-            if(isBgmOn) {
-                bgm.pause();
-                btn.innerText = "소리 끔 🔇";
-            } else {
-                bgm.play();
-                btn.innerText = "소리 켬 🔊";
-            }
+            if(isBgmOn) { bgm.pause(); btn.innerText = "소리 끔 🔇"; } 
+            else { bgm.play(); btn.innerText = "소리 켬 🔊"; }
             isBgmOn = !isBgmOn;
         }
 
@@ -167,14 +150,21 @@
             reader.readAsText(file, "UTF-8");
         });
 
+        // 🌟 순서대로 매칭 로직이 적용된 사진 업로드 부분
         document.getElementById('photoInput').addEventListener('change', async function(e) {
             const files = Array.from(e.target.files);
+            files.sort((a, b) => a.name.localeCompare(b.name, undefined, {numeric: true, sensitivity: 'base'}));
+            
             photoMap = {}; 
-            const promises = files.map(file => {
+            const promises = files.map((file, index) => {
                 return new Promise((resolve) => {
-                    const name = file.name.split('.')[0].trim();
                     const reader = new FileReader();
-                    reader.onload = (re) => { photoMap[name] = re.target.result; resolve(); };
+                    reader.onload = (re) => { 
+                        const fileName = file.name.split('.')[0].trim();
+                        const targetName = names.includes(fileName) ? fileName : names[index];
+                        if(targetName) { photoMap[targetName] = re.target.result; }
+                        resolve(); 
+                    };
                     reader.readAsDataURL(file);
                 });
             });
@@ -244,28 +234,16 @@
             });
         }
 
-        // 🌟 정답/오답 로직 업데이트 🌟
         function guess(c, btn) {
             let found = false;
             state.forEach((s, i) => {
                 if (s.cho === c && !s.choOpen) { s.choOpen = true; found = true; }
                 if (s.jong === c && !s.jongOpen) { s.jongOpen = true; found = true; }
             });
-            
-            if (found) {
-                // 정답: 녹색으로 변함
-                btn.classList.add('hit');
-                renderWord();
-                checkWin();
-            } else {
-                // 오답: 빨간색으로 변하고 흔들림
-                btn.classList.add('miss'); // 빨간색 스타일 적용
-                btn.classList.add('shake'); // 흔들기 애니메이션 시작
-                
-                // 0.5초(애니메이션 시간) 후에 shake 클래스만 제거 (다음에 또 누르면 흔들리게)
-                setTimeout(() => {
-                    btn.classList.remove('shake');
-                }, 500);
+            if (found) { btn.classList.add('hit'); renderWord(); checkWin(); } 
+            else { 
+                btn.classList.add('miss'); btn.classList.add('shake');
+                setTimeout(() => { btn.classList.remove('shake'); }, 500);
             }
         }
 
