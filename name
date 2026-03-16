@@ -16,7 +16,7 @@
 
         /* 1. 교사 설정 페이지 */
         #admin-page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: white; }
-        .setup-box { width: 450px; padding: 40px; border-radius: 30px; border: 3px solid var(--primary); box-shadow: 0 10px 30px rgba(255,143,177,0.2); }
+        .setup-box { width: 90%; max-width: 450px; padding: 40px; border-radius: 30px; border: 3px solid var(--primary); box-shadow: 0 10px 30px rgba(255,143,177,0.2); }
         .setup-box h2 { color: var(--primary); font-size: 35px; margin-bottom: 25px; }
         .upload-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #fdfdfd; border: 2px dashed #ffcadb; border-radius: 15px; cursor: pointer; color: #ff8fb1; font-weight: bold; font-size: 18px; }
         .upload-btn.done { border-color: var(--secondary); background: #f1f8e9; color: #2e7d32; }
@@ -30,42 +30,40 @@
             position: fixed; top: 20px; right: 20px; z-index: 100;
             background: white; border: 2px solid var(--primary); border-radius: 50px;
             padding: 10px 15px; cursor: pointer; font-size: 20px; font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .top-bar { display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; width: 100%; }
-        .draw-btn { font-size: 28px; padding: 12px 50px; background: var(--secondary); color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 8px 15px rgba(77, 182, 172, 0.3); height: 75px; transition: 0.2s; }
+        .draw-btn { font-size: 28px; padding: 12px 50px; background: var(--secondary); color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 8px 15px rgba(77, 182, 172, 0.3); height: 75px; }
 
         .word-container { display: flex; flex-direction: row; justify-content: center; align-items: flex-end; gap: 15px; margin: 20px auto; flex-wrap: wrap; min-height: 160px; }
         .syllable { display: flex; flex-direction: column; background: white; border: 3px solid #ffdeeb; border-radius: 20px; padding: 15px; min-width: 110px; min-height: 145px; align-items: center; justify-content: center; box-shadow: 0 6px 12px rgba(0,0,0,0.05); transition: 0.3s; }
         .syllable.all-clear { border-color: #81c784; background-color: #f1f8e9; transform: scale(1.05); }
 
-        .top-part { display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .top-part.row { flex-direction: row !important; }
-        .top-part.column { flex-direction: column !important; }
-
         .cho-box, .jong-box { width: 48px; height: 48px; border: 2.5px dashed #ffcadb; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: bold; background: #fffcfd; border-radius: 12px; color: #ffdee8; }
         .cho-box.open, .jong-box.open { border: 3px solid #81c784; color: #2e7d32; background: white; }
         .jung-text { font-size: 58px; font-weight: bold; color: #ff5252; line-height: 1; }
 
-        .keyboard-container { max-width: 650px; margin: 30px auto; display: flex !important; flex-direction: column !important; gap: 10px; }
-        .keyboard-row { display: flex !important; flex-direction: row !important; justify-content: center !important; gap: 8px; width: 100%; }
-        .key { width: 60px; height: 60px; background: white; border: 2px solid #ffdeeb; border-radius: 15px; font-weight: bold; font-size: 32px; cursor: pointer; box-shadow: 0 4px 0 #ffdeeb; color: #555; transition: 0.1s; position: relative; }
+        .keyboard-container { max-width: 650px; margin: 30px auto; display: flex; flex-direction: column; gap: 10px; }
+        .keyboard-row { display: flex; justify-content: center; gap: 8px; width: 100%; }
+        .key { width: 60px; height: 60px; background: white; border: 2px solid #ffdeeb; border-radius: 15px; font-weight: bold; font-size: 32px; cursor: pointer; box-shadow: 0 4px 0 #ffdeeb; color: #555; transition: 0.1s; }
         
+        /* 🌟 상태 스타일 */
         .key.hit { background: #81c784 !important; color: white !important; border: none; box-shadow: 0 4px 0 #66bb6a; }
         .key.miss { background: var(--error) !important; color: white !important; border-color: #d32f2f; box-shadow: 0 4px 0 #b71c1c; }
-        .key.shake { animation: shake 0.5s ease-in-out; }
-
+        
+        /* 🌟 흔들기 애니메이션 */
+        .key.shake { animation: shake 0.4s ease-in-out; }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
         }
 
         #msg { font-size: 32px; font-weight: bold; color: var(--secondary); height: 45px; margin-top: 10px; }
 
         #photo-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 25px; border-radius: 30px; border: 8px solid var(--primary); z-index: 1000; width: 330px; box-shadow: 0 0 50px rgba(0,0,0,0.3); }
-        #photo-modal img { width: 100%; height: 320px; object-fit: cover; border-radius: 20px; margin-bottom: 10px; }
+        #photo-modal img { width: 100%; height: 320px; object-fit: cover; border-radius: 20px; margin-bottom: 10px; display: none; }
         #modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index: 999; }
         input[type="file"] { display: none; }
     </style>
@@ -86,9 +84,7 @@
     <div id="game-page">
         <button class="bgm-toggle" id="bgmBtn" onclick="toggleBgm()">소리 켬 🔊</button>
         <h1>🍓 우리 반 한글 놀이터</h1>
-        <div class="top-bar">
-            <button class="draw-btn" onclick="nextGame()">주인공 나와라 얍! 🎲</button>
-        </div>
+        <div class="top-bar"><button class="draw-btn" onclick="nextGame()">주인공 나와라 얍! 🎲</button></div>
         <div id="msg">준비가 끝나면 뽑기를 눌러요!</div>
         <div class="word-container" id="display"></div>
         <div class="keyboard-container" id="kbd"></div>
@@ -97,138 +93,108 @@
         <div id="photo-modal">
             <img id="winner-img" src="" alt="친구 사진">
             <div id="winner-name" style="font-size:35px; color:var(--primary); font-weight:bold;"></div>
-            <button onclick="nextGame()" style="padding:10px 30px; border-radius:20px; border:none; background:var(--secondary); color:white; cursor:pointer; font-size:20px; font-weight:bold; margin-top:10px;">다음 친구 보러 가기 ➔</button>
+            <button onclick="nextGame()" style="padding:10px 30px; border-radius:20px; border:none; background:var(--secondary); color:white; cursor:pointer; font-size:20px; font-weight:bold; margin-top:10px;">다음 친구 ➔</button>
         </div>
     </div>
 
     <script>
         const CHO = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
-        const JUNG = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"];
+        const JUNG = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅗ","ㅘ","ㅙ","ㅚ","ㅛ","ㅜ","ㅝ","ㅞ","ㅟ","ㅠ","ㅡ","ㅢ","ㅣ"];
         const JONG = ["","ㄱ","ㄲ","ㄳ","ㄴ","ㄵ","ㄶ","ㄷ","ㄹ","ㄺ","ㄻ","ㄼ","ㄽ","ㄾ","ㄿ","ㅀ","ㅁ","ㅂ","ㅄ","ㅅ","ㅆ","ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
-        const SIDE_VOWELS = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅣ"];
         const KEYBOARD_LAYOUT = [["ㄱ","ㄴ","ㄷ","ㄹ","ㅁ","ㅂ","ㅅ"],["ㅇ","ㅈ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"],["ㄲ","ㄸ","ㅃ","ㅆ","ㅉ"]];
 
-        let names = [], unplayed = [], currentWord = "", state = [];
-        let photoMap = {}; 
-        let audioCtx = null;
-        let isBgmOn = true;
-
+        let names = [], unplayed = [], currentWord = "", state = [], photoMap = {};
+        let audioCtx = null, isBgmOn = true;
         const bgm = new Audio('Mr. Turtle - The Green Orbs.mp3');
         bgm.loop = true; bgm.volume = 0.2;
 
         function playSuccessSound() {
             if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if(audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
-            osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.1); 
-            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+            osc.type = 'sine'; osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
             osc.start(); osc.stop(audioCtx.currentTime + 0.4);
         }
 
         function toggleBgm() {
-            const btn = document.getElementById('bgmBtn');
-            if(isBgmOn) { bgm.pause(); btn.innerText = "소리 끔 🔇"; } 
-            else { bgm.play(); btn.innerText = "소리 켬 🔊"; }
+            if(isBgmOn) { bgm.pause(); document.getElementById('bgmBtn').innerText = "소리 끔 🔇"; } 
+            else { bgm.play(); document.getElementById('bgmBtn').innerText = "소리 켬 🔊"; }
             isBgmOn = !isBgmOn;
         }
 
         document.getElementById('nameInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
             const reader = new FileReader();
             reader.onload = (re) => {
                 names = re.target.result.match(/[가-힣]+/g) || [];
                 unplayed = [...names];
-                document.getElementById('name-btn').innerText = "✅ 명단 완료 (" + names.length + "명)";
+                document.getElementById('name-btn').innerText = `✅ 명단 완료 (${names.length}명)`;
                 document.getElementById('name-btn').classList.add('done');
                 checkSetup();
             };
-            reader.readAsText(file, "UTF-8");
+            reader.readAsText(e.target.files[0], "UTF-8");
         });
 
-        // 🌟 순서대로 매칭 로직이 적용된 사진 업로드 부분
         document.getElementById('photoInput').addEventListener('change', async function(e) {
             const files = Array.from(e.target.files);
-            files.sort((a, b) => a.name.localeCompare(b.name, undefined, {numeric: true, sensitivity: 'base'}));
-            
-            photoMap = {}; 
+            files.sort((a, b) => a.name.localeCompare(b.name, undefined, {numeric: true}));
+            photoMap = {};
             const promises = files.map((file, index) => {
                 return new Promise((resolve) => {
                     const reader = new FileReader();
-                    reader.onload = (re) => { 
-                        const fileName = file.name.split('.')[0].trim();
-                        const targetName = names.includes(fileName) ? fileName : names[index];
-                        if(targetName) { photoMap[targetName] = re.target.result; }
-                        resolve(); 
+                    reader.onload = (re) => {
+                        const targetName = names[index];
+                        if(targetName) photoMap[targetName] = re.target.result;
+                        resolve();
                     };
                     reader.readAsDataURL(file);
                 });
             });
             await Promise.all(promises);
-            document.getElementById('photo-btn').innerText = "✅ 사진 완료 (" + Object.keys(photoMap).length + "장)";
+            document.getElementById('photo-btn').innerText = `✅ 사진 완료 (${Object.keys(photoMap).length}장)`;
             document.getElementById('photo-btn').classList.add('done');
             checkSetup();
         });
 
         function checkSetup() { if (names.length > 0 && Object.keys(photoMap).length > 0) document.getElementById('entryBtn').style.display = 'block'; }
-
-        function startGame() {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            bgm.play().catch(() => {});
-            document.getElementById('admin-page').style.display = 'none';
-            document.getElementById('game-page').style.display = 'block';
-        }
-
-        function decompose(word) {
-            return Array.from(word).map(char => {
-                const code = char.charCodeAt(0) - 44032;
-                const jongIdx = code % 28, jungIdx = ((code - jongIdx) / 28) % 21, choIdx = Math.floor(((code - jongIdx) / 28) / 21);
-                return { cho: CHO[choIdx], jung: JUNG[jungIdx], jong: JONG[jongIdx] };
-            });
-        }
+        function startGame() { bgm.play().catch(()=>{}); document.getElementById('admin-page').style.display = 'none'; document.getElementById('game-page').style.display = 'block'; }
 
         function nextGame() {
             closeModal();
             if (unplayed.length === 0) unplayed = [...names];
             currentWord = unplayed.splice(Math.floor(Math.random() * unplayed.length), 1)[0];
-            state = decompose(currentWord).map(d => ({ ...d, choOpen: false, jongOpen: d.jong === "" }));
+            state = Array.from(currentWord).map(char => {
+                const code = char.charCodeAt(0) - 44032;
+                const jongIdx = code % 28, jungIdx = ((code - jongIdx) / 28) % 21, choIdx = Math.floor(((code - jongIdx) / 28) / 21);
+                return { cho: CHO[choIdx], jung: JUNG[jungIdx], jong: JONG[jongIdx], choOpen: false, jongOpen: JONG[jongIdx] === "" };
+            });
             document.getElementById('msg').innerText = "누구일까? 자음을 눌러봐!";
-            renderWord();
-            renderKeyboard();
+            renderWord(); renderKeyboard();
         }
 
         function renderWord() {
-            const container = document.getElementById('display');
-            container.innerHTML = "";
-            state.forEach((s, i) => {
-                const div = document.createElement('div');
-                div.className = "syllable";
-                const isSide = SIDE_VOWELS.includes(s.jung);
-                let html = `<div class="top-part ${isSide ? 'row' : 'column'}">`;
-                html += `<div class="cho-box ${s.choOpen ? 'open' : ''}">${s.choOpen ? s.cho : '?'}</div>`;
-                html += `<div class="jung-text">${s.jung}</div></div>`;
-                if (s.jong !== "") html += `<div class="bottom-part"><div class="jong-box ${s.jongOpen ? 'open' : ''}">${s.jongOpen ? s.jong : '?'}</div></div>`;
-                div.innerHTML = html;
-                if (s.choOpen && (s.jong === "" || s.jongOpen)) div.classList.add('all-clear');
+            const container = document.getElementById('display'); container.innerHTML = "";
+            state.forEach(s => {
+                const div = document.createElement('div'); div.className = "syllable";
+                const isSide = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅣ"].includes(s.jung);
+                div.innerHTML = `<div style="display:flex; flex-direction:${isSide?'row':'column'}; align-items:center; gap:10px;">
+                    <div class="cho-box ${s.choOpen?'open':''}">${s.choOpen?s.cho:'?'}</div>
+                    <div class="jung-text">${s.jung}</div></div>
+                    ${s.jong !== "" ? `<div class="jong-box ${s.jongOpen?'open':''}" style="margin-top:10px;">${s.jongOpen?s.jong:'?'}</div>` : ""}`;
+                if (s.choOpen && s.jongOpen) div.classList.add('all-clear');
                 container.appendChild(div);
             });
         }
 
         function renderKeyboard() {
-            const kbd = document.getElementById('kbd');
-            kbd.innerHTML = "";
+            const kbd = document.getElementById('kbd'); kbd.innerHTML = "";
             KEYBOARD_LAYOUT.forEach(row => {
-                const rowDiv = document.createElement('div');
-                rowDiv.className = "keyboard-row";
+                const rowDiv = document.createElement('div'); rowDiv.className = "keyboard-row";
                 row.forEach(c => {
-                    const b = document.createElement('button');
-                    b.className = 'key'; b.innerText = c;
-                    b.onclick = () => guess(c, b);
-                    rowDiv.appendChild(b);
+                    const b = document.createElement('button'); b.className = 'key'; b.innerText = c;
+                    b.onclick = () => guess(c, b); rowDiv.appendChild(b);
                 });
                 kbd.appendChild(rowDiv);
             });
@@ -236,23 +202,23 @@
 
         function guess(c, btn) {
             let found = false;
-            state.forEach((s, i) => {
+            state.forEach(s => {
                 if (s.cho === c && !s.choOpen) { s.choOpen = true; found = true; }
                 if (s.jong === c && !s.jongOpen) { s.jongOpen = true; found = true; }
             });
-            if (found) { btn.classList.add('hit'); renderWord(); checkWin(); } 
+            if (found) { btn.classList.add('hit'); renderWord(); if (state.every(s => s.choOpen && s.jongOpen)) { playSuccessSound(); showModal(); } } 
             else { 
                 btn.classList.add('miss'); btn.classList.add('shake');
-                setTimeout(() => { btn.classList.remove('shake'); }, 500);
+                setTimeout(() => btn.classList.remove('shake'), 400); 
             }
         }
-
-        function checkWin() { if (state.every(s => s.choOpen && (s.jong === "" || s.jongOpen))) { playSuccessSound(); showModal(); } }
 
         function showModal() {
             document.getElementById('winner-name').innerText = currentWord;
             const photoData = photoMap[currentWord.trim()];
-            document.getElementById('winner-img').src = photoData ? photoData : 'https://via.placeholder.com/300?text=No+Photo';
+            const img = document.getElementById('winner-img');
+            if (photoData) { img.src = photoData; img.style.display = "block"; } 
+            else { img.style.display = "none"; document.getElementById('winner-name').innerText += " (사진없음)"; }
             document.getElementById('modal-overlay').style.display = "block";
             document.getElementById('photo-modal').style.display = "block";
         }
