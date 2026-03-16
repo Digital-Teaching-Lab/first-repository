@@ -14,56 +14,42 @@
         * { font-family: 'OngleipParkDahyeon', cursive !important; box-sizing: border-box; }
         body { background-color: var(--bg); text-align: center; padding: 0; margin: 0; color: #444; overflow-x: hidden; }
 
-        /* 1. 교사 설정 페이지 */
-        #admin-page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: white; }
-        .setup-box { width: 90%; max-width: 450px; padding: 40px; border-radius: 30px; border: 3px solid var(--primary); box-shadow: 0 10px 30px rgba(255,143,177,0.2); }
-        .setup-box h2 { color: var(--primary); font-size: 35px; margin-bottom: 25px; }
-        .upload-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #fdfdfd; border: 2px dashed #ffcadb; border-radius: 15px; cursor: pointer; color: #ff8fb1; font-weight: bold; font-size: 18px; }
+        /* 설정 페이지 */
+        #admin-page { padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; background: white; }
+        .setup-box { width: 100%; max-width: 500px; padding: 30px; border-radius: 30px; border: 3px solid var(--primary); background: #fff; }
+        .upload-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; background: #fdfdfd; border: 2px dashed #ffcadb; border-radius: 15px; cursor: pointer; color: #ff8fb1; font-weight: bold; }
         .upload-btn.done { border-color: var(--secondary); background: #f1f8e9; color: #2e7d32; }
-        .entry-btn { width: 100%; padding: 20px; background: var(--primary); color: white; border: none; border-radius: 50px; font-size: 28px; font-weight: bold; cursor: pointer; margin-top: 20px; display: none; box-shadow: 0 5px 15px rgba(255,143,177,0.4); }
+        
+        /* 🌟 미리보기 테이블 스타일 */
+        #preview-area { margin-top: 20px; width: 100%; max-height: 300px; overflow-y: auto; border: 1px solid #eee; border-radius: 10px; display: none; }
+        .preview-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .preview-table th, .preview-table td { border: 1px solid #eee; padding: 8px; text-align: center; }
+        .preview-table img { width: 40px; height: 40px; object-fit: cover; border-radius: 5px; }
 
-        /* 2. 학생용 게임 화면 */
+        .entry-btn { width: 100%; padding: 20px; background: var(--primary); color: white; border: none; border-radius: 50px; font-size: 24px; font-weight: bold; cursor: pointer; margin-top: 20px; display: none; }
+
+        /* 게임 화면 */
         #game-page { display: none; padding: 20px; }
-        h1 { font-size: 45px; color: var(--primary); margin-bottom: 15px; }
-
-        .bgm-toggle {
-            position: fixed; top: 20px; right: 20px; z-index: 100;
-            background: white; border: 2px solid var(--primary); border-radius: 50px;
-            padding: 10px 15px; cursor: pointer; font-size: 20px; font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .top-bar { display: flex; justify-content: center; align-items: center; margin: 0 auto 20px; width: 100%; }
-        .draw-btn { font-size: 28px; padding: 12px 50px; background: var(--secondary); color: white; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 8px 15px rgba(77, 182, 172, 0.3); height: 75px; }
-
-        .word-container { display: flex; flex-direction: row; justify-content: center; align-items: flex-end; gap: 15px; margin: 20px auto; flex-wrap: wrap; min-height: 160px; }
-        .syllable { display: flex; flex-direction: column; background: white; border: 3px solid #ffdeeb; border-radius: 20px; padding: 15px; min-width: 110px; min-height: 145px; align-items: center; justify-content: center; box-shadow: 0 6px 12px rgba(0,0,0,0.05); transition: 0.3s; }
-        .syllable.all-clear { border-color: #81c784; background-color: #f1f8e9; transform: scale(1.05); }
-
-        .cho-box, .jong-box { width: 48px; height: 48px; border: 2.5px dashed #ffcadb; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: bold; background: #fffcfd; border-radius: 12px; color: #ffdee8; }
+        .bgm-toggle { position: fixed; top: 10px; right: 10px; z-index: 100; background: white; border: 2px solid var(--primary); border-radius: 50px; padding: 8px 12px; cursor: pointer; }
+        .draw-btn { font-size: 24px; padding: 15px 40px; background: var(--secondary); color: white; border: none; border-radius: 50px; cursor: pointer; margin-bottom: 20px; }
+        .word-container { display: flex; justify-content: center; gap: 10px; margin: 20px auto; flex-wrap: wrap; }
+        .syllable { background: white; border: 3px solid #ffdeeb; border-radius: 20px; padding: 15px; min-width: 100px; display: flex; flex-direction: column; align-items: center; }
+        .syllable.all-clear { border-color: #81c784; background: #f1f8e9; }
+        .cho-box, .jong-box { width: 45px; height: 45px; border: 2px dashed #ffcadb; display: flex; align-items: center; justify-content: center; font-size: 30px; border-radius: 10px; color: #ffdee8; }
         .cho-box.open, .jong-box.open { border: 3px solid #81c784; color: #2e7d32; background: white; }
-        .jung-text { font-size: 58px; font-weight: bold; color: #ff5252; line-height: 1; }
+        .jung-text { font-size: 50px; color: #ff5252; line-height: 1; }
 
-        .keyboard-container { max-width: 650px; margin: 30px auto; display: flex; flex-direction: column; gap: 10px; }
-        .keyboard-row { display: flex; justify-content: center; gap: 8px; width: 100%; }
-        .key { width: 60px; height: 60px; background: white; border: 2px solid #ffdeeb; border-radius: 15px; font-weight: bold; font-size: 32px; cursor: pointer; box-shadow: 0 4px 0 #ffdeeb; color: #555; transition: 0.1s; }
-        
-        /* 🌟 상태 스타일 */
-        .key.hit { background: #81c784 !important; color: white !important; border: none; box-shadow: 0 4px 0 #66bb6a; }
-        .key.miss { background: var(--error) !important; color: white !important; border-color: #d32f2f; box-shadow: 0 4px 0 #b71c1c; }
-        
-        /* 🌟 흔들기 애니메이션 */
-        .key.shake { animation: shake 0.4s ease-in-out; }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-8px); }
-            40%, 80% { transform: translateX(8px); }
-        }
+        .keyboard-container { max-width: 600px; margin: 20px auto; display: flex; flex-direction: column; gap: 8px; }
+        .keyboard-row { display: flex; justify-content: center; gap: 5px; }
+        .key { width: 55px; height: 55px; background: white; border: 2px solid #ffdeeb; border-radius: 12px; font-size: 24px; cursor: pointer; box-shadow: 0 3px 0 #ffdeeb; }
+        .key.hit { background: #81c784 !important; color: white !important; border: none; }
+        .key.miss { background: var(--error) !important; color: white !important; border: none; }
+        .key.shake { animation: shake 0.4s; }
+        @keyframes shake { 0%, 100% {transform:translateX(0)} 20%, 60% {transform:translateX(-5px)} 40%, 80% {transform:translateX(5px)} }
 
-        #msg { font-size: 32px; font-weight: bold; color: var(--secondary); height: 45px; margin-top: 10px; }
-
-        #photo-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 25px; border-radius: 30px; border: 8px solid var(--primary); z-index: 1000; width: 330px; box-shadow: 0 0 50px rgba(0,0,0,0.3); }
-        #photo-modal img { width: 100%; height: 320px; object-fit: cover; border-radius: 20px; margin-bottom: 10px; display: none; }
+        /* 모달 */
+        #photo-modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 30px; border: 6px solid var(--primary); z-index: 1000; width: 320px; text-align: center; }
+        #photo-modal img { width: 100%; height: 300px; object-fit: cover; border-radius: 20px; margin-bottom: 10px; }
         #modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index: 999; }
         input[type="file"] { display: none; }
     </style>
@@ -73,27 +59,37 @@
     <div id="admin-page">
         <div class="setup-box">
             <h2>⚙️ 선생님 설정</h2>
+            <p style="font-size: 14px; color: #888;">명단 순서와 사진 선택 순서가 매칭됩니다.</p>
             <label for="nameInput" id="name-btn" class="upload-btn">1. 명단(.txt) 불러오기</label>
             <input type="file" id="nameInput" accept=".txt">
+            
             <label for="photoInput" id="photo-btn" class="upload-btn">2. 사진들 뭉땅 선택</label>
             <input type="file" id="photoInput" accept="image/*" multiple>
-            <button class="entry-btn" id="entryBtn" onclick="startGame()">우리 반 한글 놀이터 입장! 🎲</button>
+
+            <div id="preview-area">
+                <table class="preview-table" id="preview-table">
+                    <thead><tr><th>순번</th><th>이름</th><th>사진 미리보기</th></tr></thead>
+                    <tbody id="preview-tbody"></tbody>
+                </table>
+            </div>
+
+            <button class="entry-btn" id="entryBtn" onclick="startGame()">놀이터 입장! 🎲</button>
         </div>
     </div>
 
     <div id="game-page">
         <button class="bgm-toggle" id="bgmBtn" onclick="toggleBgm()">소리 켬 🔊</button>
-        <h1>🍓 우리 반 한글 놀이터</h1>
-        <div class="top-bar"><button class="draw-btn" onclick="nextGame()">주인공 나와라 얍! 🎲</button></div>
-        <div id="msg">준비가 끝나면 뽑기를 눌러요!</div>
+        <h1 style="font-size: 30px;">🍓 우리 반 한글 놀이터</h1>
+        <button class="draw-btn" onclick="nextGame()">주인공 나와라 얍! 🎲</button>
+        <div id="msg" style="font-size: 20px; color: var(--secondary); height: 30px;"></div>
         <div class="word-container" id="display"></div>
         <div class="keyboard-container" id="kbd"></div>
 
         <div id="modal-overlay" onclick="closeModal()"></div>
         <div id="photo-modal">
-            <img id="winner-img" src="" alt="친구 사진">
-            <div id="winner-name" style="font-size:35px; color:var(--primary); font-weight:bold;"></div>
-            <button onclick="nextGame()" style="padding:10px 30px; border-radius:20px; border:none; background:var(--secondary); color:white; cursor:pointer; font-size:20px; font-weight:bold; margin-top:10px;">다음 친구 ➔</button>
+            <img id="winner-img" src="">
+            <div id="winner-name" style="font-size:30px; color:var(--primary); font-weight:bold;"></div>
+            <button onclick="nextGame()" style="margin-top:10px; padding:10px 20px; border-radius:15px; border:none; background:var(--secondary); color:white;">다음 친구 ➔</button>
         </div>
     </div>
 
@@ -125,6 +121,7 @@
             isBgmOn = !isBgmOn;
         }
 
+        // 명단 불러오기
         document.getElementById('nameInput').addEventListener('change', function(e) {
             const reader = new FileReader();
             reader.onload = (re) => {
@@ -132,14 +129,17 @@
                 unplayed = [...names];
                 document.getElementById('name-btn').innerText = `✅ 명단 완료 (${names.length}명)`;
                 document.getElementById('name-btn').classList.add('done');
-                checkSetup();
+                updatePreview();
             };
             reader.readAsText(e.target.files[0], "UTF-8");
         });
 
+        // 사진 불러오기 및 미리보기 생성
         document.getElementById('photoInput').addEventListener('change', async function(e) {
             const files = Array.from(e.target.files);
+            // 파일명 정렬
             files.sort((a, b) => a.name.localeCompare(b.name, undefined, {numeric: true}));
+            
             photoMap = {};
             const promises = files.map((file, index) => {
                 return new Promise((resolve) => {
@@ -155,15 +155,32 @@
             await Promise.all(promises);
             document.getElementById('photo-btn').innerText = `✅ 사진 완료 (${Object.keys(photoMap).length}장)`;
             document.getElementById('photo-btn').classList.add('done');
-            checkSetup();
+            updatePreview();
         });
 
-        function checkSetup() { if (names.length > 0 && Object.keys(photoMap).length > 0) document.getElementById('entryBtn').style.display = 'block'; }
+        // 🌟 미리보기 테이블 업데이트
+        function updatePreview() {
+            const tbody = document.getElementById('preview-tbody');
+            tbody.innerHTML = "";
+            if (names.length > 0) {
+                document.getElementById('preview-area').style.display = "block";
+                names.forEach((name, i) => {
+                    const tr = document.createElement('tr');
+                    const photo = photoMap[name];
+                    tr.innerHTML = `<td>${i+1}</td><td>${name}</td><td>${photo ? `<img src="${photo}">` : "<span style='color:red'>사진없음</span>"}</td>`;
+                    tbody.appendChild(tr);
+                });
+            }
+            if (names.length > 0 && Object.keys(photoMap).length > 0) {
+                document.getElementById('entryBtn').style.display = 'block';
+            }
+        }
+
         function startGame() { bgm.play().catch(()=>{}); document.getElementById('admin-page').style.display = 'none'; document.getElementById('game-page').style.display = 'block'; }
 
         function nextGame() {
             closeModal();
-            if (unplayed.length === 0) unplayed = [...names];
+            if (unplayed.length === 0) { alert("모든 친구들을 만났어요! 처음부터 다시 시작합니다."); unplayed = [...names]; }
             currentWord = unplayed.splice(Math.floor(Math.random() * unplayed.length), 1)[0];
             state = Array.from(currentWord).map(char => {
                 const code = char.charCodeAt(0) - 44032;
@@ -179,10 +196,10 @@
             state.forEach(s => {
                 const div = document.createElement('div'); div.className = "syllable";
                 const isSide = ["ㅏ","ㅐ","ㅑ","ㅒ","ㅓ","ㅔ","ㅕ","ㅖ","ㅣ"].includes(s.jung);
-                div.innerHTML = `<div style="display:flex; flex-direction:${isSide?'row':'column'}; align-items:center; gap:10px;">
+                div.innerHTML = `<div style="display:flex; flex-direction:${isSide?'row':'column'}; align-items:center; gap:5px;">
                     <div class="cho-box ${s.choOpen?'open':''}">${s.choOpen?s.cho:'?'}</div>
                     <div class="jung-text">${s.jung}</div></div>
-                    ${s.jong !== "" ? `<div class="jong-box ${s.jongOpen?'open':''}" style="margin-top:10px;">${s.jongOpen?s.jong:'?'}</div>` : ""}`;
+                    ${s.jong !== "" ? `<div class="jong-box ${s.jongOpen?'open':''}" style="margin-top:5px;">${s.jongOpen?s.jong:'?'}</div>` : ""}`;
                 if (s.choOpen && s.jongOpen) div.classList.add('all-clear');
                 container.appendChild(div);
             });
@@ -206,23 +223,19 @@
                 if (s.cho === c && !s.choOpen) { s.choOpen = true; found = true; }
                 if (s.jong === c && !s.jongOpen) { s.jongOpen = true; found = true; }
             });
-            if (found) { btn.classList.add('hit'); renderWord(); if (state.every(s => s.choOpen && s.jongOpen)) { playSuccessSound(); showModal(); } } 
-            else { 
-                btn.classList.add('miss'); btn.classList.add('shake');
-                setTimeout(() => btn.classList.remove('shake'), 400); 
-            }
+            if (found) { btn.classList.add('hit'); renderWord(); if (state.every(s => s.choOpen && s.jongOpen)) { playSuccessSound(); setTimeout(showModal, 300); } } 
+            else { btn.classList.add('miss'); btn.classList.add('shake'); setTimeout(() => btn.classList.remove('shake'), 400); }
         }
 
         function showModal() {
             document.getElementById('winner-name').innerText = currentWord;
-            const photoData = photoMap[currentWord.trim()];
+            const photoData = photoMap[currentWord];
             const img = document.getElementById('winner-img');
             if (photoData) { img.src = photoData; img.style.display = "block"; } 
-            else { img.style.display = "none"; document.getElementById('winner-name').innerText += " (사진없음)"; }
+            else { img.style.display = "none"; }
             document.getElementById('modal-overlay').style.display = "block";
             document.getElementById('photo-modal').style.display = "block";
         }
-
         function closeModal() { document.getElementById('modal-overlay').style.display = "none"; document.getElementById('photo-modal').style.display = "none"; }
     </script>
 </body>
